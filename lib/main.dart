@@ -87,18 +87,20 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               ),
             ),
             const SizedBox(height: 24),
-            // Botón para probar la función
-            ElevatedButton.icon(
-              onPressed: completeTask, // Llama la función aquí
-              icon: const Icon(Icons.check),
-              label: const Text('Completar tarea'),
-            ),
-            const SizedBox(height: 24),
-            // Botón para probar la función
-            ElevatedButton.icon(
-              onPressed: addTask, // Llama la función aquí
-              icon: const Icon(Icons.add),
-              label: const Text('Agregar tarea'),
+            Row(
+              children: [
+                ElevatedButton.icon(
+                  onPressed: addTask,
+                  icon: const Icon(Icons.add),
+                  label: const Text('Agregar tarea'),
+                ),
+                const SizedBox(width: 12),
+                ElevatedButton.icon(
+                  onPressed: completeTask,
+                  icon: const Icon(Icons.check),
+                  label: const Text('Completar tarea'),
+                ),
+              ],
             ),
           ],
         ),

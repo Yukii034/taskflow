@@ -79,3 +79,26 @@ Marcar una tarea como completada solo modifica una copia en memoria (`RemoteTask
 ### Flujo de datos
 
 `main.dart` → `TasksViewModel.loadTasks()` → `RemoteTaskRepository.getTasks()` → `TaskApiService` (Dio, GET) → `Task.fromJson()` → `notifyListeners()` → lista y detalle.
+
+## Estados de la lista de tareas
+
+La pantalla "Mis tareas" distingue cuatro estados, controlados por `TasksViewModel`:
+
+| Estado | Qué se muestra | Cómo provocarlo |
+|--------|----------------|-----------------|
+| Carga | Indicador circular de progreso | Abrir la app o pulsar el botón de actualizar; limitar la red del emulador si responde muy rápido |
+| Éxito | Una tarjeta por cada tarea | Tener internet y un `userId` válido en `TaskApiService` |
+| Vacío | Mensaje "Todavía no tienes tareas registradas." y botón **Actualizar** | Cambiar temporalmente `userId` a `9999` en `TaskApiService` y reiniciar |
+| Error | Mensaje de error y botón **Reintentar** | Desactivar internet en el emulador y pulsar actualizar |
+
+### Reintento
+
+Al reactivar internet y pulsar **Reintentar**, `loadTasks()` vuelve a consultar la API y la lista se recupera sin reiniciar la aplicación. También se puede actualizar con el botón de la barra superior o deslizando hacia abajo (`RefreshIndicator`).
+
+### Diferencia entre vacío y error
+
+Una lista vacía es una respuesta válida del servidor; un error significa que no se pudo obtener la respuesta. Por eso tienen mensajes y botones distintos.
+
+### Nota
+
+Al actualizar se vuelve a leer el servidor, por lo que una tarea marcada como completada localmente vuelve a su estado remoto original.

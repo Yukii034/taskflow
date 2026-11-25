@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import 'tasks_view_model.dart';
+import 'task_form_screen.dart';
 
 class TaskListScreen extends StatelessWidget {
   const TaskListScreen({super.key});
@@ -23,6 +24,25 @@ class TaskListScreen extends StatelessWidget {
             icon: const Icon(Icons.refresh),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () async {
+          final draft = await context.push<TaskDraft>('/new');
+          if (!context.mounted || draft == null) return;
+
+          final date = draft.dueDate;
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                date == null
+                    ? 'Formulario válido: ${draft.title}'
+                    : 'Formulario válido: ${draft.title} (límite ${date.day}/${date.month}/${date.year})',
+              ),
+            ),
+          );
+        },
+        icon: const Icon(Icons.add),
+        label: const Text('Nueva tarea'),
       ),
       body: _buildBody(context, viewModel),
     );

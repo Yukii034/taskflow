@@ -102,3 +102,19 @@ Una lista vacía es una respuesta válida del servidor; un error significa que n
 ### Nota
 
 Al actualizar se vuelve a leer el servidor, por lo que una tarea marcada como completada localmente vuelve a su estado remoto original.
+
+## Operaciones CRUD (POST, PATCH, DELETE)
+
+TaskFlow permite crear, editar el título y eliminar tareas mediante `TaskApiService`:
+
+| Operación | Método HTTP | Endpoint | Dónde se usa |
+|-----------|-------------|----------|--------------|
+| Crear | POST | `/todos` | Botón "Nueva tarea" (formulario) |
+| Editar título | PATCH | `/todos/:id` | Botón "Editar título" en el detalle |
+| Eliminar | DELETE | `/todos/:id` | Botón "Eliminar" en el detalle, con confirmación |
+
+### Importante: JSONPlaceholder simula las escrituras
+
+JSONPlaceholder responde como si guardara los cambios, pero **no los persiste**. Por eso, al actualizar la lista o reiniciar la app, vuelven los datos originales. TaskFlow actualiza su lista en memoria solo después de recibir una respuesta correcta; si la petición falla, muestra un mensaje de error y no anuncia éxito.
+
+La descripción y la prioridad se mantienen solo de forma local, porque la API únicamente conoce `title`, `completed` y `userId`.
